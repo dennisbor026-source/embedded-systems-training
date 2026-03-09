@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Week 2 Assignment - Personal Website</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 40px;
+            line-height: 1.6;
+        }
+
+        .container{
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            max-width: 900px;
+            margin: auto;
+        }
+        .container1{
+            background: rgb(45, 43, 43);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            max-width: 900px;
+            margin: auto;
+        }
+        h1{
+            color:#333;
+        }
+
+        h2{
+            color:#444;
+        }
+
+        a{
+            text-decoration: none;
+            color: blue;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Week 2 Assignment</h1>
+
+<h2>The Assignment</h2>
+
+<p>
+    <div class="container1">
+    <pre><code>
+import math
+class Shape:
+    def area(self):
+        
+        """
+        This method should be implemented by subclasses
+        """
+pass
+class Circle(Shape):
+    def __init__(self, diameter):
+        self.diameter = diameter
+    def area(self):
+# TODO: calculate the circle area
+        r = self.diameter/2
+        Area = math.pi * r**2
+        return Area
+pass
+class Square(Shape):
+    def __init__(self, length):
+        self.length = length
+    def area(self):
+        #Area = length × width
+
+        Area = self.length**2
+        return Area
+# TODO: calculate the square area
+        pass
+class Rectangle(Shape):
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+    def area(self):
+        Area = self.width * self.length
+        return Area
+# TODO: calculate the rectangle area
+        pass
+class RightTriangle(Shape):
+    def __init__(self, base, height):
+        self.base = base
+        self.height = height
+    def area(self):
+        #Area = (base × height) / 2
+        Area = (self.base * self.height) / 2
+        return Area
+# TODO: calculate the triangle area
+
+        pass
+# Test the program
+circle = Circle(10)
+square = Square(5)
+rectangle = Rectangle(4, 6)
+triangle = RightTriangle(3, 8)
+print("Circle area:", circle.area())
+print("Square area:", square.area())
+print("Rectangle area:", rectangle.area())
+print("Triangle area:", triangle.area())
+
+</code></pre>
+</div>
+</p>
+
+
+<a href="index.html">Back to Home</a>
+
+</div>
+
+</body>
+
+</html>
