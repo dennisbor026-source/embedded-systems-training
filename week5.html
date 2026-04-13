@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5 - Debounce Algorithm</title>
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafb;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        
+        h1, h2 { color: #1a202c; }
+        
+        a.back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #3182ce;
+            font-weight: bold;
+        }
+
+        a.back-link:hover { text-decoration: underline; }
+
+        .assignment-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Thonny IDE Code Styling */
+        pre.thonny-editor {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            color: #000000;
+        }
+        .kw { color: #0000ff; font-weight: bold; } /* Keywords */
+        .com { color: #808080; } /* Comments */
+        .num { color: #7f007f; } /* Numbers */
+        .bltin { color: #7f007f; } /* Built-ins */
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link">&larr; Back to Homepage</a>
+
+    <div class="assignment-container">
+        <h1>Button Debounce Algorithm</h1>
+        
+        <p>So this week's assignment was to investigate the concept of debounce. If you've ever worked with physical pushbuttons, you might not know that inside, they have mechanical metal contacts that act like microscopic springs. When you press them, they actually vibrate and "bounce" against each other for a few milliseconds. To a fast microcontroller, this looks like multiple erratic ON/OFF spikes instead of one clean press.</p>
+        
+        <p>To fix this, I wrote a software debounce algorithm. It essentially uses a timer to filter out all that mechanical noise. It ignores rapid state changes and only registers a press as valid once the electrical signal has stayed completely steady for a short window (about 50 milliseconds).</p>
+
+        <h2>Python Source Code</h2>
+        
+        <pre class="thonny-editor"><code><span class="kw">import</span> board
+<span class="kw">import</span> digitalio
+<span class="kw">import</span> time
+
+button = digitalio.DigitalInOut(board.GP15)
+button.direction = digitalio.Direction.INPUT
+
+led = digitalio.DigitalInOut(board.LED)
+led.direction = digitalio.Direction.OUTPUT
+
+<span class="com"># =========================================</span>
+<span class="com"># TODO VARIABLES</span>
+<span class="com"># =========================================</span>
+last_reading = <span class="kw">False</span>       <span class="com"># Tracks the raw reading from the previous loop</span>
+button_state = <span class="kw">False</span>       <span class="com"># Tracks the actual, confirmed (debounced) state</span>
+led_state = <span class="kw">False</span>          <span class="com"># Tracks whether the LED should be ON or OFF</span>
+last_debounce_time = <span class="num">0</span>     <span class="com"># The last time the input pin fluctuated</span>
+debounce_delay = <span class="num">0.05</span>      <span class="com"># 50 milliseconds threshold for stability</span>
+<span class="com"># =========================================</span>
+
+<span class="kw">while True</span>:
+    reading = button.value
+    
+    <span class="com"># STEP 1: Detect change</span>
+    <span class="com"># If the current reading is different from the last loop, reset the timer</span>
+    <span class="kw">if</span> reading != last_reading:
+        last_debounce_time = time.monotonic()
+        
+    <span class="com"># STEP 2: Check if stable</span>
+    <span class="com"># If the time since the last fluctuation is greater than our delay threshold, </span>
+    <span class="com"># we consider the signal stable.</span>
+    <span class="kw">if</span> (time.monotonic() - last_debounce_time) > debounce_delay:
+        
+        <span class="com"># If the stable reading is different from our officially recorded button state:</span>
+        <span class="kw">if</span> reading != button_state:
+            button_state = reading
+            
+            <span class="com"># STEP 3: Toggle LED</span>
+            <span class="com"># Only toggle the LED when the button transitions to True (a press)</span>
+            <span class="kw">if</span> button_state == <span class="kw">True</span>:
+                led_state = <span class="kw">not</span> led_state
+                
+    <span class="com"># STEP 4: Apply output</span>
+    <span class="com"># Continuously drive the LED to whatever the current led_state is</span>
+    led.value = led_state
+    
+    <span class="com"># STEP 5: Update last state</span>
+    <span class="com"># Save the raw reading for the next time through the loop</span>
+    last_reading = reading
+    
+    time.sleep(<span class="num">0.01</span>)</code></pre>
+    </div>
+
+</body>
+</html>
