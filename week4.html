@@ -1,189 +1,216 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4: C Programming Assignment</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        
+        /* Updated Code Block Styling */
+        pre {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        code {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+        }
 
-<title>Week 3 Assignment - Personal Website</title>
-
-<!-- Syntax highlighting library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<script>hljs.highlightAll();</script>
-
-<style>
-
-body{
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#eef2f3,#dfe9f3);
-    margin:40px;
-    line-height:1.6;
-}
-
-.container{
-    background:white;
-    padding:40px;
-    border-radius:12px;
-    box-shadow:0px 5px 20px rgba(0,0,0,0.15);
-    max-width:900px;
-    margin:auto;
-}
-
-h1{
-    color:#222;
-    border-bottom:3px solid #0077ff;
-    padding-bottom:10px;
-}
-
-h2{
-    color:#444;
-    margin-top:25px;
-}
-
-p{
-    font-size:16px;
-    color:#555;
-}
-
-.code-container{
-    margin-top:20px;
-}
-
-pre{
-    border-radius:8px;
-    padding:20px;
-    overflow-x:auto;
-    font-size:14px;
-}
-
-a{
-    display:inline-block;
-    margin-top:30px;
-    padding:10px 18px;
-    background:#0077ff;
-    color:white;
-    border-radius:6px;
-    text-decoration:none;
-    transition:0.3s;
-}
-
-a:hover{
-    background:#005ad1;
-}
-
-</style>
-
+        /* Updated Terminal Output Styling (Clean, Light Slate) */
+        .terminal-output {
+            background-color: #f8fafc; /* Very soft slate/blue-gray */
+            color: #334155; /* Dark slate text */
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #3b82f6; /* Blue accent line */
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <section id="week-4-assignment">
+        <h2>Week 4: Student Record Management System</h2>
+        
+        <p>Welcome back! For this module, we dove into some of the most powerful ways to organize data in C by building a <strong>Student Record Management System</strong>.</p>
+        
+        <p>This assignment was all about leveling up how we structured our code. Instead of juggling dozens of loose variables, we learned how to neatly package related information together using <strong>Structs</strong>, define clear, fixed categories using <strong>Enums</strong>, and optimize our memory usage by letting different data types share the same space using <strong>Unions</strong>.</p>
+        
+        <p>We also got hands-on with <strong>Dynamic Memory Allocation</strong> (<code>malloc</code> and <code>free</code>). This allowed our programs to create arrays on the fly at runtime, meaning our system could easily adapt to handle however many students we threw at it. It was a fantastic, practical way to master memory management!</p>
 
-<h1>Week 3 Assignment</h1>
+        <hr style="border: 0; height: 1px; background: #eee; margin: 30px 0;">
 
-<h2>The Assignment</h2>
+        <h3>Completed Assignment Code</h3>
+        
+        <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
 
-<p>
-During this week we were required to develop a simple Python program in order to practice and demonstrate our understanding of 
-Python programming concepts. The main focus of the exercise was on 
-<b>Object Oriented Programming (OOP)</b> in Python.
-</p>
+/* ================= ENUM ================= */
+// Define an enum called ProgramType
+typedef enum {
+    UNDERGRADUATE,
+    POSTGRADUATE
+} ProgramType;
 
-<p>
-The program required us to create a base class called <b>Shape</b> and then create multiple subclasses representing 
-different shapes. Each subclass implemented its own version of the <b>area()</b> method to calculate the area of that 
-specific shape.
-</p>
+/* ================= UNION ================= */
+// Define a union called AcademicInfo
+typedef union {
+    float gpa;
+    int research_hours;
+} AcademicInfo;
 
-<p>
-The shapes implemented in the program include:
-</p>
+/* ================= STRUCT ================= */
+// Define a struct called Student
+typedef struct {
+    char name[100];
+    int age;
+    ProgramType program;
+    AcademicInfo info; 
+} Student;
 
-<ul>
-<li>Circle</li>
-<li>Square</li>
-<li>Rectangle</li>
-<li>Right Triangle</li>
-</ul>
+/* ================= FUNCTION PROTOTYPES ================= */
+void inputStudent(Student *s);
+void displayStudent(Student s);
 
-<p>
-Below is the Python code that implements the assignment:
-</p>
+/* ================= MAIN FUNCTION ================= */
+int main() {
+    int n;
+    printf("Enter number of students: ");
+    scanf("%d", &n);
 
-<div class="code-container">
+    // Dynamically allocate memory for n students
+    Student *students = (Student *)malloc(n * sizeof(Student));
 
-<pre><code class="language-python">
-import math
+    // Check if memory allocation failed
+    if (students == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1; // Exit program with an error code
+    }
 
-class Shape:
-    def area(self):
-        """
-        This method should be implemented by subclasses
-        """
-        pass
+    // Loop to input student data
+    for (int i = 0; i &lt; n; i++) {
+        printf("\n--- Student %d ---\n", i + 1);
+        inputStudent(&students[i]);
+    }
 
+    // Display all student records
+    printf("\n===== Student Records =====\n");
+    for (int i = 0; i &lt; n; i++) {
+        displayStudent(students[i]);
+    }
 
-class Circle(Shape):
+    // Free allocated memory
+    free(students);
 
-    def __init__(self, diameter):
-        self.diameter = diameter
+    return 0;
+}
 
-    def area(self):
-        r = self.diameter / 2
-        Area = math.pi * r**2
-        return Area
+/* ================= INPUT FUNCTION ================= */
+void inputStudent(Student *s) {
+    // Input name using the suggested format to capture spaces
+    printf("Enter name: ");
+    scanf(" %[^\n]", s-&gt;name);
 
+    // Input age
+    printf("Enter age: ");
+    scanf("%d", &s-&gt;age);
 
-class Square(Shape):
+    // Input program type
+    int progChoice;
+    printf("Enter Program (0 for Undergraduate, 1 for Postgraduate): ");
+    scanf("%d", &progChoice);
+    s-&gt;program = (ProgramType)progChoice;
 
-    def __init__(self, length):
-        self.length = length
+    // Based on program: input GPA or research hours
+    if (s-&gt;program == UNDERGRADUATE) {
+        printf("Enter GPA: ");
+        scanf("%f", &s-&gt;info.gpa);
+    } else if (s-&gt;program == POSTGRADUATE) {
+        printf("Enter research hours: ");
+        scanf("%d", &s-&gt;info.research_hours);
+    } else {
+        printf("Invalid program selected.\n");
+    }
+}
 
-    def area(self):
-        Area = self.length**2
-        return Area
+/* ================= DISPLAY FUNCTION ================= */
+void displayStudent(Student s) {
+    printf("\nName: %s\n", s.name);
+    printf("Age: %d\n", s.age);
 
-
-class Rectangle(Shape):
-
-    def __init__(self, length, width):
-        self.length = length
-        self.width = width
-
-    def area(self):
-        Area = self.width * self.length
-        return Area
-
-
-class RightTriangle(Shape):
-
-    def __init__(self, base, height):
-        self.base = base
-        self.height = height
-
-    def area(self):
-        Area = (self.base * self.height) / 2
-        return Area
-
-
-# Test the program
-
-circle = Circle(10)
-square = Square(5)
-rectangle = Rectangle(4, 6)
-triangle = RightTriangle(3, 8)
-
-print("Circle area:", circle.area())
-print("Square area:", square.area())
-print("Rectangle area:", rectangle.area())
-print("Triangle area:", triangle.area())
+    // Display program type and corresponding AcademicInfo
+    if (s.program == UNDERGRADUATE) {
+        printf("Program: Undergraduate\n");
+        printf("GPA: %.2f\n", s.info.gpa);
+    } else if (s.program == POSTGRADUATE) {
+        printf("Program: Postgraduate\n");
+        printf("Research Hours: %d\n", s.info.research_hours);
+    } else {
+        printf("Program: Unknown\n");
+    }
+}
 </code></pre>
 
-</div>
+        <h3>Sample Terminal Output</h3>
+        <p>Here is what it looks like when you compile and run the program:</p>
+        
+        <pre class="terminal-output"><code>Enter number of students: 2
 
-<a href="index.html">⬅ Back to Home</a>
+--- Student 1 ---
+Enter name: Alice Smith
+Enter age: 20
+Enter Program (0 for Undergraduate, 1 for Postgraduate): 0
+Enter GPA: 3.8
 
-</div>
+--- Student 2 ---
+Enter name: Bob Jones
+Enter age: 24
+Enter Program (0 for Undergraduate, 1 for Postgraduate): 1
+Enter research hours: 120
 
+===== Student Records =====
+
+Name: Alice Smith
+Age: 20
+Program: Undergraduate
+GPA: 3.80
+
+Name: Bob Jones
+Age: 24
+Program: Postgraduate
+Research Hours: 120
+</code></pre>
+
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </body>
-
 </html>
