@@ -27,11 +27,28 @@
 
         h2{
             color:#444;
+            border-bottom: 1px solid #eee; /* Added a subtle line under headings */
+            padding-bottom: 5px;
+        }
+
+        /* New styles for the bottom navigation links */
+        .nav-links {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between; /* Pushes the links to opposite sides */
         }
 
         a{
             text-decoration: none;
-            color: blue;
+            color: #0056b3; /* Matched the blue from your other pages */
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover{
+            color: red;
         }
     </style>
 </head>
@@ -39,15 +56,6 @@
 <body>
 
 <div class="container">
-
-<h1>Week 1 Assignment</h1>
-
-<h2>The Assignment</h2>
-
-<p>
-On Friday, during the last lesson for Week 1, Victor left us with an assignment to build a simple
-personal website using HTML. The goal was to create a page that describes who we are. Below is my attempt at it.
-</p>
 
 <h2>About Me</h2>
 
@@ -93,9 +101,10 @@ a laboratory focused on practical engineering development where people can exper
 prototype, and build real-world solutions.
 </p>
 
-<br>
-
-<a href="index.html">Back to Home</a>
+<div class="nav-links">
+    <a href="index.html">← Back to Home</a>
+    <a href="capstone.html">View Capstone Project →</a>
+</div>
 
 </div>
 

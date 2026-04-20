@@ -1,9 +1,13 @@
 //data types - character,interger,boolean,float,string
 //we need a main function because it serves as the entry point
 #include <stdio.h>
+#include <stdbool.h>
 int main(){
+
+    //or
+    bool output = 1 | 1;
   
-    printf("text to display %d\n", result);
+    printf("text to display %d\n", output);
 
     return 0;// most operating systems interpret 0 as a succesful run and we are returning 0 because main function is an interger
 

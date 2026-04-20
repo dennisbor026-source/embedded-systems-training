@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6: Sensors & Actuators</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        header {
+            border-bottom: 2px solid #0056b3;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+        h1 {
+            color: #0056b3;
+            margin-bottom: 5px;
+        }
+        .date {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 0;
+        }
+        .content-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        /* Image Gallery Styles */
+        .image-gallery {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        .image-gallery figure {
+            margin: 0;
+            flex: 1 1 30%; /* Grow and shrink, base width 30% */
+            min-width: 250px;
+        }
+        .image-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .image-gallery img:hover {
+            transform: scale(1.02);
+        }
+        figcaption {
+            text-align: center;
+            font-size: 0.85em;
+            color: #555;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        /* Code Block Styles */
+        pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        code .keyword { color: #569cd6; }
+        code .comment { color: #6a9955; font-style: italic; }
+        code .string { color: #ce9178; }
+        code .function { color: #dcdcaa; }
+        code .number { color: #b5cea8; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Week 6: Sensors and Actuators</h1>
+        <p class="date">Working with the Raspberry Pi Pico</p>
+    </header>
+
+    <main>
+        <section class="content-section">
+            <h2>Project Overview</h2>
+            <p>
+                This week, we focused on familiarizing ourselves with hardware interaction using the Raspberry Pi Pico. 
+                The goal was to successfully interface a microcontroller with both a sensor (to read environmental data) 
+                and an actuator (to trigger a physical response based on that data).
+            </p>
+            <p>
+                For this build, I used an <strong>HC-SR04 Ultrasonic Distance Sensor</strong> as the input and an <strong>LED</strong> as the output actuator. 
+                Using CircuitPython, the system reads the distance measured by the sonar and dynamically adjusts the brightness of the LED using Pulse Width Modulation (PWM).
+            </p>
+
+            <div class="image-gallery">
+                <figure>
+                    <img src="2.jpeg" alt="Laptop screen showing CircuitPython code alongside the active breadboard setup">
+                    <figcaption>Writing the logic in CircuitPython while monitoring serial output.</figcaption>
+                </figure>
+                <figure>
+                    <img src="1.jpeg" alt="Top-down view of the RP2040 board connected to the breadboard">
+                    <figcaption>Top-down view of the wiring between the Pi Pico, ultrasonic sensor, and LED.</figcaption>
+                </figure>
+                <figure>
+                    <img src="3.jpeg" alt="Close up of the HC-SR04 sensor and illuminated LED">
+                    <figcaption>The HC-SR04 sensor and LED acting as our primary sensor/actuator pair.</figcaption>
+                </figure>
+            </div>
+
+            <h2>The Code</h2>
+            <p>
+                Below is the CircuitPython script I wrote to handle the logic. It initializes the pins for the HC-SR04 and sets up a PWM output for the LED. 
+                Inside the main loop, it multiplies the detected distance by 900 to scale the value appropriately for the LED's duty cycle, effectively dimming or brightening the LED as objects move closer or further away.
+            </p>
+
+            <pre><code><span class="comment"># SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries</span>
+<span class="comment"># SPDX-License-Identifier: MIT</span>
+
+<span class="keyword">import</span> time
+<span class="keyword">import</span> digitalio
+<span class="keyword">import</span> board
+<span class="keyword">import</span> pwmio
+<span class="keyword">import</span> adafruit_hcsr04
+
+<span class="comment"># Initialize Sensor and Actuator</span>
+sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.GP5, echo_pin=board.GP6)
+led = digitalio.DigitalInOut(board.GP8)
+led.direction = digitalio.Direction.OUTPUT
+pwm = pwmio.PWMOut(board.GP7)
+
+<span class="keyword">while True</span>:
+    <span class="keyword">try</span>:
+        <span class="comment"># Attempt to read the distance and update the PWM</span>
+        pwm.duty_cycle = <span class="function">int</span>(sonar.distance) * <span class="number">900</span>
+        <span class="function">print</span>(sonar.distance)
+    <span class="keyword">except</span> RuntimeError:
+        <span class="function">print</span>(<span class="string">"Retrying!"</span>)
+    
+    time.sleep(<span class="number">0.1</span>)</code></pre>
+        </section>
+    </main>
+
+</body>
+</html>
